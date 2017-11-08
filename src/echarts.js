@@ -9,33 +9,33 @@
  * https://github.com/ecomfe/echarts/blob/master/LICENSE.txt
  */
 
-import * as zrender from 'zrender/src/zrender';
-import * as zrUtil from 'zrender/src/core/util';
-import * as colorTool from 'zrender/src/tool/color';
-import env from 'zrender/src/core/env';
-import timsort from 'zrender/src/core/timsort';
-import Eventful from 'zrender/src/mixin/Eventful';
-import GlobalModel from './model/Global';
-import ExtensionAPI from './ExtensionAPI';
-import CoordinateSystemManager from './CoordinateSystem';
-import OptionManager from './model/OptionManager';
-import backwardCompat from './preprocessor/backwardCompat';
-import ComponentModel from './model/Component';
-import SeriesModel from './model/Series';
-import ComponentView from './view/Component';
-import ChartView from './view/Chart';
-import * as graphic from './util/graphic';
-import * as modelUtil from './util/model';
-import {throttle} from './util/throttle';
-import seriesColor from './visual/seriesColor';
-import loadingDefault from './loading/default';
+ import * as zrender from 'zrender/src/zrender';
+ import * as zrUtil from 'zrender/src/core/util';
+ import * as colorTool from 'zrender/src/tool/color';
+ import env from 'zrender/src/core/env';
+ import timsort from 'zrender/src/core/timsort';
+ import Eventful from 'zrender/src/mixin/Eventful';
+ import GlobalModel from './model/Global';
+ import ExtensionAPI from './ExtensionAPI';
+ import CoordinateSystemManager from './CoordinateSystem';
+ import OptionManager from './model/OptionManager';
+ import backwardCompat from './preprocessor/backwardCompat';
+ import ComponentModel from './model/Component';
+ import SeriesModel from './model/Series';
+ import ComponentView from './view/Component';
+ import ChartView from './view/Chart';
+ import * as graphic from './util/graphic';
+ import * as modelUtil from './util/model';
+ import {throttle} from './util/throttle';
+ import seriesColor from './visual/seriesColor';
+ import loadingDefault from './loading/default';
 
-var each = zrUtil.each;
-var parseClassType = ComponentModel.parseClassType;
+ var each = zrUtil.each;
+ var parseClassType = ComponentModel.parseClassType;
 
-export var version = '3.8.0';
+ export var version = '3.8.0';
 
-export var dependencies = {
+ export var dependencies = {
     zrender: '3.7.0'
 };
 
@@ -86,7 +86,7 @@ function createRegisterEventWithLowercaseName(method) {
 /**
  * @module echarts~MessageCenter
  */
-function MessageCenter() {
+ function MessageCenter() {
     Eventful.call(this);
 }
 MessageCenter.prototype.on = createRegisterEventWithLowercaseName('on');
@@ -97,7 +97,7 @@ zrUtil.mixin(MessageCenter, Eventful);
 /**
  * @module echarts~ECharts
  */
-function ECharts(dom, theme, opts) {
+ function ECharts(dom, theme, opts) {
     opts = opts || {};
 
     // Get theme by name
@@ -108,32 +108,33 @@ function ECharts(dom, theme, opts) {
     /**
      * @type {string}
      */
-    this.id;
+     this.id;
 
     /**
      * Group id
      * @type {string}
      */
-    this.group;
+     this.group;
 
     /**
      * @type {HTMLElement}
      * @private
      */
-    this._dom = dom;
+     this._dom = dom;
 
-    var defaultRenderer = 'canvas';
-    if (__DEV__) {
+     var defaultRenderer = 'canvas';
+     
+     if ('undefined' !== typeof __DEV__ && __DEV__) {
         defaultRenderer = (
             typeof window === 'undefined' ? global : window
-        ).__ECHARTS__DEFAULT__RENDERER__ || defaultRenderer;
+            ).__ECHARTS__DEFAULT__RENDERER__ || defaultRenderer;
     }
 
     /**
      * @type {module:zrender/ZRender}
      * @private
      */
-    var zr = this._zr = zrender.init(dom, {
+     var zr = this._zr = zrender.init(dom, {
         renderer: opts.renderer || defaultRenderer,
         devicePixelRatio: opts.devicePixelRatio,
         width: opts.width,
@@ -145,59 +146,59 @@ function ECharts(dom, theme, opts) {
      * @type {Function}
      * @private
      */
-    this._throttledZrFlush = throttle(zrUtil.bind(zr.flush, zr), 17);
+     this._throttledZrFlush = throttle(zrUtil.bind(zr.flush, zr), 17);
 
-    var theme = zrUtil.clone(theme);
-    theme && backwardCompat(theme, true);
+     var theme = zrUtil.clone(theme);
+     theme && backwardCompat(theme, true);
     /**
      * @type {Object}
      * @private
      */
-    this._theme = theme;
+     this._theme = theme;
 
     /**
      * @type {Array.<module:echarts/view/Chart>}
      * @private
      */
-    this._chartsViews = [];
+     this._chartsViews = [];
 
     /**
      * @type {Object.<string, module:echarts/view/Chart>}
      * @private
      */
-    this._chartsMap = {};
+     this._chartsMap = {};
 
     /**
      * @type {Array.<module:echarts/view/Component>}
      * @private
      */
-    this._componentsViews = [];
+     this._componentsViews = [];
 
     /**
      * @type {Object.<string, module:echarts/view/Component>}
      * @private
      */
-    this._componentsMap = {};
+     this._componentsMap = {};
 
     /**
      * @type {module:echarts/CoordinateSystem}
      * @private
      */
-    this._coordSysMgr = new CoordinateSystemManager();
+     this._coordSysMgr = new CoordinateSystemManager();
 
     /**
      * @type {module:echarts/ExtensionAPI}
      * @private
      */
-    this._api = createExtensionAPI(this);
+     this._api = createExtensionAPI(this);
 
-    Eventful.call(this);
+     Eventful.call(this);
 
     /**
      * @type {module:echarts~MessageCenter}
      * @private
      */
-    this._messageCenter = new MessageCenter();
+     this._messageCenter = new MessageCenter();
 
     // Init mouse events
     this._initEvents();
@@ -243,14 +244,14 @@ echartsProto._onframe = function () {
 /**
  * @return {HTMLElement}
  */
-echartsProto.getDom = function () {
+ echartsProto.getDom = function () {
     return this._dom;
 };
 
 /**
  * @return {module:zrender~ZRender}
  */
-echartsProto.getZr = function () {
+ echartsProto.getZr = function () {
     return this._zr;
 };
 
@@ -268,8 +269,9 @@ echartsProto.getZr = function () {
  * @param {boolean} [opts.notMerge=false]
  * @param {boolean} [opts.lazyUpdate=false] Useful when setOption frequently.
  */
-echartsProto.setOption = function (option, notMerge, lazyUpdate) {
-    if (__DEV__) {
+ echartsProto.setOption = function (option, notMerge, lazyUpdate) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         zrUtil.assert(!this[IN_MAIN_PROCESS], '`setOption` should not be called during main process.');
     }
 
@@ -312,42 +314,42 @@ echartsProto.setOption = function (option, notMerge, lazyUpdate) {
 /**
  * @DEPRECATED
  */
-echartsProto.setTheme = function () {
+ echartsProto.setTheme = function () {
     console.log('ECharts#setTheme() is DEPRECATED in ECharts 3.0');
 };
 
 /**
  * @return {module:echarts/model/Global}
  */
-echartsProto.getModel = function () {
+ echartsProto.getModel = function () {
     return this._model;
 };
 
 /**
  * @return {Object}
  */
-echartsProto.getOption = function () {
+ echartsProto.getOption = function () {
     return this._model && this._model.getOption();
 };
 
 /**
  * @return {number}
  */
-echartsProto.getWidth = function () {
+ echartsProto.getWidth = function () {
     return this._zr.getWidth();
 };
 
 /**
  * @return {number}
  */
-echartsProto.getHeight = function () {
+ echartsProto.getHeight = function () {
     return this._zr.getHeight();
 };
 
 /**
  * @return {number}
  */
-echartsProto.getDevicePixelRatio = function () {
+ echartsProto.getDevicePixelRatio = function () {
     return this._zr.painter.dpr || window.devicePixelRatio || 1;
 };
 
@@ -357,14 +359,14 @@ echartsProto.getDevicePixelRatio = function () {
  * @param {string} [opts.backgroundColor]
  * @return {string}
  */
-echartsProto.getRenderedCanvas = function (opts) {
+ echartsProto.getRenderedCanvas = function (opts) {
     if (!env.canvasSupported) {
         return;
     }
     opts = opts || {};
     opts.pixelRatio = opts.pixelRatio || 1;
     opts.backgroundColor = opts.backgroundColor
-        || this._model.get('backgroundColor');
+    || this._model.get('backgroundColor');
     var zr = this._zr;
     var list = zr.storage.getDisplayList();
     // Stop animations
@@ -378,7 +380,7 @@ echartsProto.getRenderedCanvas = function (opts) {
  * Get svg data url
  * @return {string}
  */
-echartsProto.getSvgDataUrl = function () {
+ echartsProto.getSvgDataUrl = function () {
     if (!env.svgSupported) {
         return;
     }
@@ -401,7 +403,7 @@ echartsProto.getSvgDataUrl = function () {
  * @param {string} [opts.backgroundColor]
  * @param {string} [opts.excludeComponents]
  */
-echartsProto.getDataURL = function (opts) {
+ echartsProto.getDataURL = function (opts) {
     opts = opts || {};
     var excludeComponents = opts.excludeComponents;
     var ecModel = this._model;
@@ -421,9 +423,9 @@ echartsProto.getDataURL = function (opts) {
     });
 
     var url = this._zr.painter.getType() === 'svg'
-        ? this.getSvgDataUrl()
-        : this.getRenderedCanvas(opts).toDataURL(
-            'image/' + (opts && opts.type || 'png')
+    ? this.getSvgDataUrl()
+    : this.getRenderedCanvas(opts).toDataURL(
+        'image/' + (opts && opts.type || 'png')
         );
 
     each(excludesComponentViews, function (view) {
@@ -441,7 +443,7 @@ echartsProto.getDataURL = function (opts) {
  * @param {string} [opts.pixelRatio=1]
  * @param {string} [opts.backgroundColor]
  */
-echartsProto.getConnectedDataURL = function (opts) {
+ echartsProto.getConnectedDataURL = function (opts) {
     if (!env.canvasSupported) {
         return;
     }
@@ -461,7 +463,7 @@ echartsProto.getConnectedDataURL = function (opts) {
             if (chart.group === groupId) {
                 var canvas = chart.getRenderedCanvas(
                     zrUtil.clone(opts)
-                );
+                    );
                 var boundingRect = chart.getDom().getBoundingClientRect();
                 left = mathMin(boundingRect.left, left);
                 top = mathMin(boundingRect.top, top);
@@ -523,7 +525,7 @@ echartsProto.getConnectedDataURL = function (opts) {
  * @param {Array|number} value
  * @return {Array|number} result
  */
-echartsProto.convertToPixel = zrUtil.curry(doConvertPixel, 'convertToPixel');
+ echartsProto.convertToPixel = zrUtil.curry(doConvertPixel, 'convertToPixel');
 
 /**
  * Convert from pixel coordinate system to logical coordinate system.
@@ -543,9 +545,9 @@ echartsProto.convertToPixel = zrUtil.curry(doConvertPixel, 'convertToPixel');
  * @param {Array|number} value
  * @return {Array|number} result
  */
-echartsProto.convertFromPixel = zrUtil.curry(doConvertPixel, 'convertFromPixel');
+ echartsProto.convertFromPixel = zrUtil.curry(doConvertPixel, 'convertFromPixel');
 
-function doConvertPixel(methodName, finder, value) {
+ function doConvertPixel(methodName, finder, value) {
     var ecModel = this._model;
     var coordSysList = this._coordSysMgr.getCoordinateSystems();
     var result;
@@ -556,16 +558,17 @@ function doConvertPixel(methodName, finder, value) {
         var coordSys = coordSysList[i];
         if (coordSys[methodName]
             && (result = coordSys[methodName](ecModel, finder, value)) != null
-        ) {
+            ) {
             return result;
-        }
     }
+}
 
-    if (__DEV__) {
-        console.warn(
-            'No coordinate system that supports ' + methodName + ' found by the given finder.'
+
+if ('undefined' !== typeof __DEV__ && __DEV__) {
+    console.warn(
+        'No coordinate system that supports ' + methodName + ' found by the given finder.'
         );
-    }
+}
 }
 
 /**
@@ -585,7 +588,7 @@ function doConvertPixel(methodName, finder, value) {
  * @param {Array|number} value
  * @return {boolean} result
  */
-echartsProto.containPixel = function (finder, value) {
+ echartsProto.containPixel = function (finder, value) {
     var ecModel = this._model;
     var result;
 
@@ -603,16 +606,18 @@ echartsProto.containPixel = function (finder, value) {
                     result |= view.containPoint(value, model);
                 }
                 else {
-                    if (__DEV__) {
+                    
+                    if ('undefined' !== typeof __DEV__ && __DEV__) {
                         console.warn(key + ': ' + (view
                             ? 'The found component do not support containPoint.'
                             : 'No view mapping to the found component.'
-                        ));
+                            ));
                     }
                 }
             }
             else {
-                if (__DEV__) {
+                
+                if ('undefined' !== typeof __DEV__ && __DEV__) {
                     console.warn(key + ': containPoint is not supported');
                 }
             }
@@ -637,14 +642,15 @@ echartsProto.containPixel = function (finder, value) {
  *        visual will be fetched from first series.
  * @param {string} visualType 'color', 'symbol', 'symbolSize'
  */
-echartsProto.getVisual = function (finder, visualType) {
+ echartsProto.getVisual = function (finder, visualType) {
     var ecModel = this._model;
 
     finder = modelUtil.parseFinder(ecModel, finder, {defaultMainType: 'series'});
 
     var seriesModel = finder.seriesModel;
 
-    if (__DEV__) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (!seriesModel) {
             console.warn('There is no specified seires model');
         }
@@ -653,14 +659,14 @@ echartsProto.getVisual = function (finder, visualType) {
     var data = seriesModel.getData();
 
     var dataIndexInside = finder.hasOwnProperty('dataIndexInside')
-        ? finder.dataIndexInside
-        : finder.hasOwnProperty('dataIndex')
-        ? data.indexOfRawIndex(finder.dataIndex)
-        : null;
+    ? finder.dataIndexInside
+    : finder.hasOwnProperty('dataIndex')
+    ? data.indexOfRawIndex(finder.dataIndex)
+    : null;
 
     return dataIndexInside != null
-        ? data.getItemVisual(dataIndexInside, visualType)
-        : data.getVisual(visualType);
+    ? data.getItemVisual(dataIndexInside, visualType)
+    : data.getVisual(visualType);
 };
 
 /**
@@ -668,7 +674,7 @@ echartsProto.getVisual = function (finder, visualType) {
  * @param  {module:echarts/model/Component} componentModel
  * @return {module:echarts/view/Component}
  */
-echartsProto.getViewOfComponentModel = function (componentModel) {
+ echartsProto.getViewOfComponentModel = function (componentModel) {
     return this._componentsMap[componentModel.__viewId];
 };
 
@@ -677,7 +683,7 @@ echartsProto.getViewOfComponentModel = function (componentModel) {
  * @param  {module:echarts/model/Series} seriesModel
  * @return {module:echarts/view/Chart}
  */
-echartsProto.getViewOfSeriesModel = function (seriesModel) {
+ echartsProto.getViewOfSeriesModel = function (seriesModel) {
     return this._chartsMap[seriesModel.__viewId];
 };
 
@@ -688,7 +694,7 @@ var updateMethods = {
      * @param {Object} payload
      * @private
      */
-    update: function (payload) {
+     update: function (payload) {
         // console.profile && console.profile('update');
 
         var ecModel = this._model;
@@ -773,7 +779,7 @@ var updateMethods = {
      * @param {Object} payload
      * @private
      */
-    updateView: function (payload) {
+     updateView: function (payload) {
         var ecModel = this._model;
 
         // update before setOption
@@ -794,7 +800,7 @@ var updateMethods = {
      * @param {Object} payload
      * @private
      */
-    updateVisual: function (payload) {
+     updateVisual: function (payload) {
         var ecModel = this._model;
 
         // update before setOption
@@ -815,7 +821,7 @@ var updateMethods = {
      * @param {Object} payload
      * @private
      */
-    updateLayout: function (payload) {
+     updateLayout: function (payload) {
         var ecModel = this._model;
 
         // update before setOption
@@ -832,7 +838,7 @@ var updateMethods = {
      * @param {Object} payload
      * @private
      */
-    prepareAndUpdate: function (payload) {
+     prepareAndUpdate: function (payload) {
         var ecModel = this._model;
 
         prepareView.call(this, 'component', ecModel);
@@ -846,7 +852,7 @@ var updateMethods = {
 /**
  * @private
  */
-function updateDirectly(ecIns, method, payload, mainType, subType) {
+ function updateDirectly(ecIns, method, payload, mainType, subType) {
     var ecModel = ecIns._model;
 
     // broadcast
@@ -867,13 +873,13 @@ function updateDirectly(ecIns, method, payload, mainType, subType) {
     ecModel && ecModel.eachComponent(condition, function (model, index) {
         callView(ecIns[
             mainType === 'series' ? '_chartsMap' : '_componentsMap'
-        ][model.__viewId]);
+            ][model.__viewId]);
     }, ecIns);
 
     function callView(view) {
         view && view.__alive && view[method] && view[method](
             view.__model, ecModel, ecIns._api, payload
-        );
+            );
     }
 }
 
@@ -884,8 +890,9 @@ function updateDirectly(ecIns, method, payload, mainType, subType) {
  * @param {number} [opts.height] Can be 'auto' (the same as null/undefined)
  * @param {boolean} [opts.silent=false]
  */
-echartsProto.resize = function (opts) {
-    if (__DEV__) {
+ echartsProto.resize = function (opts) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         zrUtil.assert(!this[IN_MAIN_PROCESS], '`resize` should not be called during main process.');
     }
 
@@ -915,7 +922,7 @@ echartsProto.resize = function (opts) {
  * @param  {string} [name='default']
  * @param  {Object} [cfg]
  */
-echartsProto.showLoading = function (name, cfg) {
+ echartsProto.showLoading = function (name, cfg) {
     if (zrUtil.isObject(name)) {
         cfg = name;
         name = '';
@@ -924,7 +931,8 @@ echartsProto.showLoading = function (name, cfg) {
 
     this.hideLoading();
     if (!loadingEffects[name]) {
-        if (__DEV__) {
+        
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.warn('Loading effects ' + name + ' not exists.');
         }
         return;
@@ -939,7 +947,7 @@ echartsProto.showLoading = function (name, cfg) {
 /**
  * Hide loading effect
  */
-echartsProto.hideLoading = function () {
+ echartsProto.hideLoading = function () {
     this._loadingFX && this._zr.remove(this._loadingFX);
     this._loadingFX = null;
 };
@@ -948,7 +956,7 @@ echartsProto.hideLoading = function () {
  * @param {Object} eventObj
  * @return {Object}
  */
-echartsProto.makeActionFromEvent = function (eventObj) {
+ echartsProto.makeActionFromEvent = function (eventObj) {
     var payload = zrUtil.extend({}, eventObj);
     payload.type = eventActionMap[eventObj.type];
     return payload;
@@ -966,7 +974,7 @@ echartsProto.makeActionFromEvent = function (eventObj) {
  *                  false: Not not flush.
  *                  undefined: Auto decide whether perform flush.
  */
-echartsProto.dispatchAction = function (payload, opt) {
+ echartsProto.dispatchAction = function (payload, opt) {
     if (!zrUtil.isObject(opt)) {
         opt = {silent: !!opt};
     }
@@ -1097,15 +1105,15 @@ function triggerUpdatedEvent(silent) {
  * Register event
  * @method
  */
-echartsProto.on = createRegisterEventWithLowercaseName('on');
-echartsProto.off = createRegisterEventWithLowercaseName('off');
-echartsProto.one = createRegisterEventWithLowercaseName('one');
+ echartsProto.on = createRegisterEventWithLowercaseName('on');
+ echartsProto.off = createRegisterEventWithLowercaseName('off');
+ echartsProto.one = createRegisterEventWithLowercaseName('one');
 
 /**
  * @param {string} methodName
  * @private
  */
-function invokeUpdateMethod(methodName, ecModel, payload) {
+ function invokeUpdateMethod(methodName, ecModel, payload) {
     var api = this._api;
 
     // Update all components
@@ -1140,7 +1148,7 @@ function invokeUpdateMethod(methodName, ecModel, payload) {
  * @param  {module:echarts/model/Global} ecModel
  * @private
  */
-function prepareView(type, ecModel) {
+ function prepareView(type, ecModel) {
     var isComponent = type === 'component';
     var viewList = isComponent ? this._componentsViews : this._chartsViews;
     var viewMap = isComponent ? this._componentsMap : this._chartsMap;
@@ -1166,8 +1174,8 @@ function prepareView(type, ecModel) {
         if (!view) {
             var classType = parseClassType(model.type);
             var Clazz = isComponent
-                ? ComponentView.getClass(classType.main, classType.sub)
-                : ChartView.getClass(classType.sub);
+            ? ComponentView.getClass(classType.main, classType.sub)
+            : ChartView.getClass(classType.sub);
             if (Clazz) {
                 view = new Clazz();
                 view.init(ecModel, this._api);
@@ -1211,7 +1219,7 @@ function prepareView(type, ecModel) {
  * @param {module:echarts/model/Global} ecModel
  * @private
  */
-function processData(ecModel, api) {
+ function processData(ecModel, api) {
     each(dataProcessorFuncs, function (process) {
         process.func(ecModel, api);
     });
@@ -1220,7 +1228,7 @@ function processData(ecModel, api) {
 /**
  * @private
  */
-function stackSeriesData(ecModel) {
+ function stackSeriesData(ecModel) {
     var stackedDataMap = {};
     ecModel.eachSeries(function (series) {
         var stack = series.get('stack');
@@ -1242,7 +1250,7 @@ function stackSeriesData(ecModel) {
  * @param {module:echarts/model/Global} ecModel
  * @private
  */
-function doLayout(ecModel, payload) {
+ function doLayout(ecModel, payload) {
     var api = this._api;
     each(visualFuncs, function (visual) {
         if (visual.isLayout) {
@@ -1259,7 +1267,7 @@ function doLayout(ecModel, payload) {
  * @param {boolean} [excludesLayout]
  * @private
  */
-function doVisualEncoding(ecModel, payload, excludesLayout) {
+ function doVisualEncoding(ecModel, payload, excludesLayout) {
     var api = this._api;
     ecModel.clearColorPalette();
     ecModel.eachSeries(function (seriesModel) {
@@ -1267,7 +1275,7 @@ function doVisualEncoding(ecModel, payload, excludesLayout) {
     });
     each(visualFuncs, function (visual) {
         (!excludesLayout || !visual.isLayout)
-            && visual.func(ecModel, api, payload);
+        && visual.func(ecModel, api, payload);
     });
 }
 
@@ -1275,7 +1283,7 @@ function doVisualEncoding(ecModel, payload, excludesLayout) {
  * Render each chart and component
  * @private
  */
-function doRender(ecModel, payload) {
+ function doRender(ecModel, payload) {
     var api = this._api;
     // Render all components
     each(this._componentsViews, function (componentView) {
@@ -1315,13 +1323,13 @@ function doRender(ecModel, payload) {
 }
 
 var MOUSE_EVENT_NAMES = [
-    'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove',
-    'mousedown', 'mouseup', 'globalout', 'contextmenu'
+'click', 'dblclick', 'mouseover', 'mouseout', 'mousemove',
+'mousedown', 'mouseup', 'globalout', 'contextmenu'
 ];
 /**
  * @private
  */
-echartsProto._initEvents = function () {
+ echartsProto._initEvents = function () {
     each(MOUSE_EVENT_NAMES, function (eveName) {
         this._zr.on(eveName, function (e) {
             var ecModel = this.getModel();
@@ -1360,23 +1368,24 @@ echartsProto._initEvents = function () {
 /**
  * @return {boolean}
  */
-echartsProto.isDisposed = function () {
+ echartsProto.isDisposed = function () {
     return this._disposed;
 };
 
 /**
  * Clear
  */
-echartsProto.clear = function () {
+ echartsProto.clear = function () {
     this.setOption({ series: [] }, true);
 };
 
 /**
  * Dispose instance
  */
-echartsProto.dispose = function () {
+ echartsProto.dispose = function () {
     if (this._disposed) {
-        if (__DEV__) {
+        
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.warn('Instance ' + this.id + ' has been disposed');
         }
         return;
@@ -1423,7 +1432,7 @@ function updateHoverLayerStatus(zr, ecModel) {
  * @param {module:echarts/model/Series|module:echarts/model/Component} model
  * @param {module:echarts/view/Component|module:echarts/view/Chart} view
  */
-function updateProgressiveAndBlend(seriesModel, chartView) {
+ function updateProgressiveAndBlend(seriesModel, chartView) {
     // Progressive configuration
     var elCount = 0;
     chartView.group.traverse(function (el) {
@@ -1438,7 +1447,7 @@ function updateProgressiveAndBlend(seriesModel, chartView) {
             // FIXME marker and other components
             if (!el.isGroup) {
                 el.progressive = needProgressive ?
-                    Math.floor(elCount++ / frameDrawNum) : -1;
+                Math.floor(elCount++ / frameDrawNum) : -1;
                 if (needProgressive) {
                     el.stopAnimation(true);
                 }
@@ -1448,7 +1457,8 @@ function updateProgressiveAndBlend(seriesModel, chartView) {
 
     // Blend configration
     var blendMode = seriesModel.get('blendMode') || null;
-    if (__DEV__) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (!env.canvasSupported && blendMode && blendMode !== 'source-over') {
             console.warn('Only canvas support blendMode');
         }
@@ -1465,7 +1475,7 @@ function updateProgressiveAndBlend(seriesModel, chartView) {
  * @param {module:echarts/model/Series|module:echarts/model/Component} model
  * @param {module:echarts/view/Component|module:echarts/view/Chart} view
  */
-function updateZ(model, view) {
+ function updateZ(model, view) {
     var z = model.get('z');
     var zlevel = model.get('zlevel');
     // Set z and zlevel
@@ -1483,7 +1493,7 @@ function createExtensionAPI(ecInstance) {
         // Inject methods
         getCoordinateSystems: zrUtil.bind(
             coordSysMgr.getCoordinateSystems, coordSysMgr
-        ),
+            ),
         getComponentByElement: function (el) {
             while (el) {
                 var modelInfo = el.__ecComponentInfo;
@@ -1500,58 +1510,58 @@ function createExtensionAPI(ecInstance) {
  * @type {Object} key: actionType.
  * @inner
  */
-var actions = {};
+ var actions = {};
 
 /**
  * Map eventType to actionType
  * @type {Object}
  */
-var eventActionMap = {};
+ var eventActionMap = {};
 
 /**
  * Data processor functions of each stage
  * @type {Array.<Object.<string, Function>>}
  * @inner
  */
-var dataProcessorFuncs = [];
+ var dataProcessorFuncs = [];
 
 /**
  * @type {Array.<Function>}
  * @inner
  */
-var optionPreprocessorFuncs = [];
+ var optionPreprocessorFuncs = [];
 
 /**
  * @type {Array.<Function>}
  * @inner
  */
-var postUpdateFuncs = [];
+ var postUpdateFuncs = [];
 
 /**
  * Visual encoding functions of each stage
  * @type {Array.<Object.<string, Function>>}
  * @inner
  */
-var visualFuncs = [];
+ var visualFuncs = [];
 /**
  * Theme storage
  * @type {Object.<key, Object>}
  */
-var themeStorage = {};
+ var themeStorage = {};
 /**
  * Loading effects
  */
-var loadingEffects = {};
+ var loadingEffects = {};
 
 
-var instances = {};
-var connectedGroups = {};
+ var instances = {};
+ var connectedGroups = {};
 
-var idBase = new Date() - 0;
-var groupIdBase = new Date() - 0;
-var DOM_ATTRIBUTE_KEY = '_echarts_instance_';
+ var idBase = new Date() - 0;
+ var groupIdBase = new Date() - 0;
+ var DOM_ATTRIBUTE_KEY = '_echarts_instance_';
 
-function enableConnect(chart) {
+ function enableConnect(chart) {
     var STATUS_PENDING = 0;
     var STATUS_UPDATING = 1;
     var STATUS_UPDATED = 2;
@@ -1603,8 +1613,9 @@ function enableConnect(chart) {
  * @param {number} [opts.height] Use clientHeight of the input `dom` by default.
  *                               Can be 'auto' (the same as null/undefined)
  */
-export function init(dom, theme, opts) {
-    if (__DEV__) {
+ export function init(dom, theme, opts) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         // Check version
         if ((zrender.version.replace('.', '') - 0) < (dependencies.zrender.replace('.', '') - 0)) {
             throw new Error(
@@ -1612,7 +1623,7 @@ export function init(dom, theme, opts) {
                 + ' is too old for ECharts ' + version
                 + '. Current version need ZRender '
                 + dependencies.zrender + '+'
-            );
+                );
         }
 
         if (!dom) {
@@ -1622,44 +1633,46 @@ export function init(dom, theme, opts) {
 
     var existInstance = getInstanceByDom(dom);
     if (existInstance) {
-        if (__DEV__) {
+        
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.warn('There is a chart instance already initialized on the dom.');
         }
         return existInstance;
     }
 
-    if (__DEV__) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (zrUtil.isDom(dom)
             && dom.nodeName.toUpperCase() !== 'CANVAS'
             && (
                 (!dom.clientWidth && (!opts || opts.width == null))
                 || (!dom.clientHeight && (!opts || opts.height == null))
-            )
-        ) {
+                )
+            ) {
             console.warn('Can\'t get dom width or height');
-        }
     }
+}
 
-    var chart = new ECharts(dom, theme, opts);
-    chart.id = 'ec_' + idBase++;
-    instances[chart.id] = chart;
+var chart = new ECharts(dom, theme, opts);
+chart.id = 'ec_' + idBase++;
+instances[chart.id] = chart;
 
-    if (dom.setAttribute) {
-        dom.setAttribute(DOM_ATTRIBUTE_KEY, chart.id);
-    }
-    else {
-        dom[DOM_ATTRIBUTE_KEY] = chart.id;
-    }
+if (dom.setAttribute) {
+    dom.setAttribute(DOM_ATTRIBUTE_KEY, chart.id);
+}
+else {
+    dom[DOM_ATTRIBUTE_KEY] = chart.id;
+}
 
-    enableConnect(chart);
+enableConnect(chart);
 
-    return chart;
+return chart;
 }
 
 /**
  * @return {string|Array.<module:echarts~ECharts>} groupId
  */
-export function connect(groupId) {
+ export function connect(groupId) {
     // Is array of charts
     if (zrUtil.isArray(groupId)) {
         var charts = groupId;
@@ -1683,20 +1696,20 @@ export function connect(groupId) {
  * @DEPRECATED
  * @return {string} groupId
  */
-export function disConnect(groupId) {
+ export function disConnect(groupId) {
     connectedGroups[groupId] = false;
 }
 
 /**
  * @return {string} groupId
  */
-export var disconnect = disConnect;
+ export var disconnect = disConnect;
 
 /**
  * Dispose a chart instance
  * @param  {module:echarts~ECharts|HTMLDomElement|string} chart
  */
-export function dispose(chart) {
+ export function dispose(chart) {
     if (typeof chart === 'string') {
         chart = instances[chart];
     }
@@ -1713,7 +1726,7 @@ export function dispose(chart) {
  * @param  {HTMLElement} dom
  * @return {echarts~ECharts}
  */
-export function getInstanceByDom(dom) {
+ export function getInstanceByDom(dom) {
     var key;
     if (dom.getAttribute) {
         key = dom.getAttribute(DOM_ATTRIBUTE_KEY);
@@ -1728,14 +1741,14 @@ export function getInstanceByDom(dom) {
  * @param {string} key
  * @return {echarts~ECharts}
  */
-export function getInstanceById(key) {
+ export function getInstanceById(key) {
     return instances[key];
 }
 
 /**
  * Register theme
  */
-export function registerTheme(name, theme) {
+ export function registerTheme(name, theme) {
     themeStorage[name] = theme;
 }
 
@@ -1743,7 +1756,7 @@ export function registerTheme(name, theme) {
  * Register option preprocessor
  * @param {Function} preprocessorFunc
  */
-export function registerPreprocessor(preprocessorFunc) {
+ export function registerPreprocessor(preprocessorFunc) {
     optionPreprocessorFuncs.push(preprocessorFunc);
 }
 
@@ -1751,12 +1764,13 @@ export function registerPreprocessor(preprocessorFunc) {
  * @param {number} [priority=1000]
  * @param {Function} processorFunc
  */
-export function registerProcessor(priority, processorFunc) {
+ export function registerProcessor(priority, processorFunc) {
     if (typeof priority === 'function') {
         processorFunc = priority;
         priority = PRIORITY_PROCESSOR_FILTER;
     }
-    if (__DEV__) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (isNaN(priority)) {
             throw new Error('Unkown processor priority');
         }
@@ -1771,7 +1785,7 @@ export function registerProcessor(priority, processorFunc) {
  * Register postUpdater
  * @param {Function} postUpdateFunc
  */
-export function registerPostUpdate(postUpdateFunc) {
+ export function registerPostUpdate(postUpdateFunc) {
     postUpdateFuncs.push(postUpdateFunc);
 }
 
@@ -1791,16 +1805,16 @@ export function registerPostUpdate(postUpdateFunc) {
  * @param {string} [eventName]
  * @param {Function} action
  */
-export function registerAction(actionInfo, eventName, action) {
+ export function registerAction(actionInfo, eventName, action) {
     if (typeof eventName === 'function') {
         action = eventName;
         eventName = '';
     }
     var actionType = zrUtil.isObject(actionInfo)
-        ? actionInfo.type
-        : ([actionInfo, actionInfo = {
-            event: eventName
-        }][0]);
+    ? actionInfo.type
+    : ([actionInfo, actionInfo = {
+        event: eventName
+    }][0]);
 
     // Event name is all lowercase
     actionInfo.event = (actionInfo.event || actionType).toLowerCase();
@@ -1819,7 +1833,7 @@ export function registerAction(actionInfo, eventName, action) {
  * @param {string} type
  * @param {*} CoordinateSystem
  */
-export function registerCoordinateSystem(type, CoordinateSystem) {
+ export function registerCoordinateSystem(type, CoordinateSystem) {
     CoordinateSystemManager.register(type, CoordinateSystem);
 }
 
@@ -1828,12 +1842,12 @@ export function registerCoordinateSystem(type, CoordinateSystem) {
  * @param {string} type
  * @return {Array.<string|Object>}
  */
-export function getCoordinateSystemDimensions(type) {
+ export function getCoordinateSystemDimensions(type) {
     var coordSysCreator = CoordinateSystemManager.get(type);
     if (coordSysCreator) {
         return coordSysCreator.getDimensionsInfo
-                ? coordSysCreator.getDimensionsInfo()
-                : coordSysCreator.dimensions.slice();
+        ? coordSysCreator.getDimensionsInfo()
+        : coordSysCreator.dimensions.slice();
     }
 }
 
@@ -1845,12 +1859,13 @@ export function getCoordinateSystemDimensions(type) {
  * @param {number} [priority=1000]
  * @param {Function} layoutFunc
  */
-export function registerLayout(priority, layoutFunc) {
+ export function registerLayout(priority, layoutFunc) {
     if (typeof priority === 'function') {
         layoutFunc = priority;
         priority = PRIORITY_VISUAL_LAYOUT;
     }
-    if (__DEV__) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (isNaN(priority)) {
             throw new Error('Unkown layout priority');
         }
@@ -1866,12 +1881,13 @@ export function registerLayout(priority, layoutFunc) {
  * @param {number} [priority=3000]
  * @param {Function} visualFunc
  */
-export function registerVisual(priority, visualFunc) {
+ export function registerVisual(priority, visualFunc) {
     if (typeof priority === 'function') {
         visualFunc = priority;
         priority = PRIORITY_VISUAL_CHART;
     }
-    if (__DEV__) {
+    
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (isNaN(priority)) {
             throw new Error('Unkown visual priority');
         }
@@ -1885,7 +1901,7 @@ export function registerVisual(priority, visualFunc) {
 /**
  * @param {string} name
  */
-export function registerLoading(name, loadingFx) {
+ export function registerLoading(name, loadingFx) {
     loadingEffects[name] = loadingFx;
 }
 
@@ -1893,7 +1909,7 @@ export function registerLoading(name, loadingFx) {
  * @param {Object} opts
  * @param {string} [superClass]
  */
-export function extendComponentModel(opts/*, superClass*/) {
+ export function extendComponentModel(opts/*, superClass*/) {
     // var Clazz = ComponentModel;
     // if (superClass) {
     //     var classType = parseClassType(superClass);
@@ -1906,7 +1922,7 @@ export function extendComponentModel(opts/*, superClass*/) {
  * @param {Object} opts
  * @param {string} [superClass]
  */
-export function extendComponentView(opts/*, superClass*/) {
+ export function extendComponentView(opts/*, superClass*/) {
     // var Clazz = ComponentView;
     // if (superClass) {
     //     var classType = parseClassType(superClass);
@@ -1919,7 +1935,7 @@ export function extendComponentView(opts/*, superClass*/) {
  * @param {Object} opts
  * @param {string} [superClass]
  */
-export function extendSeriesModel(opts/*, superClass*/) {
+ export function extendSeriesModel(opts/*, superClass*/) {
     // var Clazz = SeriesModel;
     // if (superClass) {
     //     superClass = 'series.' + superClass.replace('series.', '');
@@ -1933,7 +1949,7 @@ export function extendSeriesModel(opts/*, superClass*/) {
  * @param {Object} opts
  * @param {string} [superClass]
  */
-export function extendChartView(opts/*, superClass*/) {
+ export function extendChartView(opts/*, superClass*/) {
     // var Clazz = ChartView;
     // if (superClass) {
     //     superClass = superClass.replace('series.', '');
@@ -1959,7 +1975,7 @@ export function extendChartView(opts/*, superClass*/) {
  *         return new Canvas(32, 32);
  *     });
  */
-export function setCanvasCreator(creator) {
+ export function setCanvasCreator(creator) {
     zrUtil.$inject.createCanvas(creator);
 }
 
