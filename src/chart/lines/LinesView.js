@@ -20,7 +20,7 @@ export default echarts.extendChartView({
         var isPolyline = seriesModel.get('polyline');
         var isLarge = seriesModel.get('large') && data.count() >= seriesModel.get('largeThreshold');
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (hasEffect && isLarge) {
                 console.warn('Large lines not support effect');
             }
@@ -59,7 +59,7 @@ export default echarts.extendChartView({
             });
         }
         if (hasEffect && trailLength) {
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 var notInIndividual = false;
                 ecModel.eachSeries(function (otherSeriesModel) {
                     if (otherSeriesModel !== seriesModel && otherSeriesModel.get('zlevel') === zlevel) {

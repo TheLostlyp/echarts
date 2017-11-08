@@ -69,7 +69,7 @@ export default echarts.extendChartView({
             });
         });
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!visualMapOfThisSeries) {
                 throw new Error('Heatmap must use with visualMap');
             }
@@ -95,7 +95,7 @@ export default echarts.extendChartView({
             var xAxis = coordSys.getAxis('x');
             var yAxis = coordSys.getAxis('y');
 
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 if (!(xAxis.type === 'category' && yAxis.type === 'category')) {
                     throw new Error('Heatmap on cartesian must have two category axes');
                 }

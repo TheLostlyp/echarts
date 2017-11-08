@@ -132,7 +132,7 @@ proto.setInputRanges = function (areas, ecModel) {
     each(areas, function (area) {
         var targetInfo = this.findTargetInfo(area, ecModel);
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(
                 !targetInfo || targetInfo === true || area.coordRange,
                 'coordRange must be specified when coord index specified.'
@@ -374,7 +374,7 @@ var coordConvert = {
 };
 
 function axisConvert(axisNameIndex, to, coordSys, rangeOrCoordRange) {
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         zrUtil.assert(
             coordSys.type === 'cartesian2d',
             'lineX/lineY brush is available only in cartesian2d.'

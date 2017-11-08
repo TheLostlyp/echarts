@@ -12,14 +12,14 @@ var mapDataStores = {};
  * @param {module:echarts/coord/geo/GeoModel|module:echarts/chart/map/MapModel} geoModel
  * @param {module:echarts/ExtensionAPI} api
  */
-function resizeGeo (geoModel, api) {
+ function resizeGeo (geoModel, api) {
 
     var boundingCoords = geoModel.get('boundingCoords');
     if (boundingCoords != null) {
         var leftTop = boundingCoords[0];
         var rightBottom = boundingCoords[1];
         if (isNaN(leftTop[0]) || isNaN(leftTop[1]) || isNaN(rightBottom[0]) || isNaN(rightBottom[1])) {
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 console.error('Invalid boundingCoords');
             }
         }
@@ -45,8 +45,8 @@ function resizeGeo (geoModel, api) {
 
     if (center && size) {
         center = [
-            numberUtil.parsePercent(center[0], viewWidth),
-            numberUtil.parsePercent(center[1], viewHeight)
+        numberUtil.parsePercent(center[0], viewWidth),
+        numberUtil.parsePercent(center[1], viewHeight)
         ];
         size = numberUtil.parsePercent(size, Math.min(viewWidth, viewHeight));
 
@@ -54,7 +54,7 @@ function resizeGeo (geoModel, api) {
             useCenterAndSize = true;
         }
         else {
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 console.warn('Given layoutCenter or layoutSize data are invalid. Use left/top/width/height instead.');
             }
         }
@@ -99,13 +99,13 @@ function resizeGeo (geoModel, api) {
  * @param {module:echarts/model/Model} model
  * @inner
  */
-function setGeoCoords(geo, model) {
+ function setGeoCoords(geo, model) {
     zrUtil.each(model.get('geoCoord'), function (geoCoord, name) {
         geo.addGeoCoord(name, geoCoord);
     });
 }
 
-if (__DEV__) {
+if ('undefined' !== typeof __DEV__ && __DEV__) {
     var mapNotExistsError = function (name) {
         console.error('Map ' + name + ' not exists. You can download map file on http://echarts.baidu.com/download-map.html');
     };
@@ -123,7 +123,7 @@ var geoCreator = {
         ecModel.eachComponent('geo', function (geoModel, idx) {
             var name = geoModel.get('map');
             var mapData = mapDataStores[name];
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 if (!mapData) {
                     mapNotExistsError(name);
                 }
@@ -132,7 +132,7 @@ var geoCreator = {
                 name + idx, name,
                 mapData && mapData.geoJson, mapData && mapData.specialAreas,
                 geoModel.get('nameMap')
-            );
+                );
             geo.zoomLimit = geoModel.get('scaleLimit');
             geoList.push(geo);
 
@@ -168,7 +168,7 @@ var geoCreator = {
 
         zrUtil.each(mapModelGroupBySeries, function (mapSeries, mapType) {
             var mapData = mapDataStores[mapType];
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 if (!mapData) {
                     mapNotExistsError(mapSeries[0].get('map'));
                 }
@@ -181,7 +181,7 @@ var geoCreator = {
                 mapType, mapType,
                 mapData && mapData.geoJson, mapData && mapData.specialAreas,
                 zrUtil.mergeAll(nameMapList)
-            );
+                );
             geo.zoomLimit = zrUtil.retrieve.apply(null, zrUtil.map(mapSeries, function (singleMapSeries) {
                 return singleMapSeries.get('scaleLimit');
             }));
@@ -217,14 +217,14 @@ var geoCreator = {
      *         })
      *     });
      */
-    registerMap: function (mapName, geoJson, specialAreas) {
+     registerMap: function (mapName, geoJson, specialAreas) {
         if (geoJson.geoJson && !geoJson.features) {
             specialAreas = geoJson.specialAreas;
             geoJson = geoJson.geoJson;
         }
         if (typeof geoJson === 'string') {
             geoJson = (typeof JSON !== 'undefined' && JSON.parse)
-                ? JSON.parse(geoJson) : (new Function('return (' + geoJson + ');'))();
+            ? JSON.parse(geoJson) : (new Function('return (' + geoJson + ');'))();
         }
         mapDataStores[mapName] = {
             geoJson: geoJson,
@@ -236,7 +236,7 @@ var geoCreator = {
      * @param {string} mapName
      * @return {Object}
      */
-    getMap: function (mapName) {
+     getMap: function (mapName) {
         return mapDataStores[mapName];
     },
 
@@ -247,7 +247,7 @@ var geoCreator = {
      * @param  {Object} [nameMap]
      * @return {Array}
      */
-    getFilledRegions: function (originRegionArr, mapName, nameMap) {
+     getFilledRegions: function (originRegionArr, mapName, nameMap) {
         // Not use the original
         var regionsArr = (originRegionArr || []).slice();
         nameMap = nameMap || {};
@@ -255,7 +255,7 @@ var geoCreator = {
         var map = geoCreator.getMap(mapName);
         var geoJson = map && map.geoJson;
         if (!geoJson) {
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 mapNotExistsError(mapName);
             }
             return originRegionArr;

@@ -114,7 +114,7 @@ var GraphicModel = echarts.extendComponentModel({
         zrUtil.each(mappingResult, function (resultItem, index) {
             var newElOption = resultItem.option;
 
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 zrUtil.assert(
                     zrUtil.isObject(newElOption) || resultItem.exist,
                     'Empty graphic option definition'
@@ -296,7 +296,7 @@ echarts.extendComponentView({
             var elOptionCleaned = getCleanedElOption(elOption);
 
             // For simple, do not support parent change, otherwise reorder is needed.
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 existEl && zrUtil.assert(
                     targetElParent === existEl.parent,
                     'Changing parent is not supported.'
@@ -387,13 +387,13 @@ echarts.extendComponentView({
 function createEl(id, targetElParent, elOption, elMap) {
     var graphicType = elOption.type;
 
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         zrUtil.assert(graphicType, 'graphic type MUST be set');
     }
 
     var Clz = graphicUtil[graphicType.charAt(0).toUpperCase() + graphicType.slice(1)];
 
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         zrUtil.assert(Clz, 'graphic type can not be found');
     }
 
@@ -465,7 +465,7 @@ function mergeNewElOptionToExist(existList, index, newElOption) {
     if ($action === 'merge') {
         if (existElOption) {
 
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 var newType = newElOption.type;
                 zrUtil.assert(
                     !newType || existElOption.type === newType,

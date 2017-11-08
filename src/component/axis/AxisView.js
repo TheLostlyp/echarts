@@ -87,7 +87,7 @@ function disposeAxisPointer(axisView, ecModel, api) {
 var axisPointerClazz = [];
 
 AxisView.registerAxisPointerClass = function (type, clazz) {
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (axisPointerClazz[type]) {
             throw new Error('axisPointer ' + type + ' exists');
         }

@@ -62,7 +62,7 @@ var baseUID = 0;
  */
 function BrushController(zr) {
 
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         zrUtil.assert(zr);
     }
 
@@ -145,7 +145,7 @@ function BrushController(zr) {
      * @private
      * @type {boolean}
      */
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         this._mounted;
     }
 
@@ -187,7 +187,7 @@ BrushController.prototype = {
      * @param {number} [brushOption.z]
      */
     enableBrush: function (brushOption) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(this._mounted);
         }
 
@@ -227,7 +227,7 @@ BrushController.prototype = {
     mount: function (opt) {
         opt = opt || {};
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             this._mounted = true; // should be at first.
         }
 
@@ -264,7 +264,7 @@ BrushController.prototype = {
      *        If brushOptionList is null/undefined, all covers removed.
      */
     updateCovers: function (brushOptionList) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(this._mounted);
         }
 
@@ -321,7 +321,7 @@ BrushController.prototype = {
     },
 
     unmount: function () {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!this._mounted) {
                 return;
             }
@@ -333,7 +333,7 @@ BrushController.prototype = {
         clearCovers(this);
         this._zr.remove(this.group);
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             this._mounted = false; // should be at last.
         }
 
@@ -783,7 +783,7 @@ function updateCoverByMouse(controller, e, localCursorPoint, isEnd) {
 
 function determineBrushType(brushType, panel) {
     if (brushType === 'auto') {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(
                 panel && panel.defaultBrushType,
                 'MUST have defaultBrushType when brushType is "atuo"'

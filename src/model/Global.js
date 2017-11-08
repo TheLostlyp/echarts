@@ -702,7 +702,7 @@ function filterBySubType(components, condition) {
 function assertSeriesInitialized(ecModel) {
     // Components that use _seriesIndices should depends on series component,
     // which make sure that their initialization is after series.
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (!ecModel._seriesIndices) {
             throw new Error('Option should contains series.');
         }

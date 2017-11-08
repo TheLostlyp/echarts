@@ -120,7 +120,7 @@ export default echarts.extendComponentView({
                     points.push(points[0].slice());
                 }
                 else {
-                    if (__DEV__) {
+                    if ('undefined' !== typeof __DEV__ && __DEV__) {
                         console.error('Can\'t draw value axis ' + i);
                     }
                 }

@@ -296,7 +296,7 @@ var DataZoomModel = echarts.extendComponentModel({
                             id: axisId
                         })[0];
 
-                        if (__DEV__) {
+                        if ('undefined' !== typeof __DEV__ && __DEV__) {
                             if (!axisModel) {
                                 throw new Error(
                                     dimNames.axis + ' "' + zrUtil.retrieve(

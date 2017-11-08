@@ -9,7 +9,7 @@ import CoordinateSystem from '../../CoordinateSystem';
 function preprocessOption(seriesOpt) {
     var data = seriesOpt.data;
     if (data && data[0] && data[0][0] && data[0][0].coord) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.warn('Lines data configuration has been changed to'
                 + ' { coords:[[1,2],[2,3]] }');
         }
@@ -53,7 +53,7 @@ var LinesSeries = SeriesModel.extend({
     },
 
     getInitialData: function (option, ecModel) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             var CoordSys = CoordinateSystem.get(option.coordinateSystem);
             if (!CoordSys) {
                 throw new Error('Unkown coordinate system ' + option.coordinateSystem);

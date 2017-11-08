@@ -475,7 +475,7 @@ var resetMethods = {
                 useMinMax[0] && interval[1] === Infinity && (close[0] = 0);
                 useMinMax[1] && interval[0] === -Infinity && (close[1] = 0);
 
-                if (__DEV__) {
+                if ('undefined' !== typeof __DEV__ && __DEV__) {
                     if (interval[0] > interval[1]) {
                         console.warn(
                             'Piece ' + index + 'is illegal: ' + interval

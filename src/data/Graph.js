@@ -85,7 +85,7 @@ graphProto.addNode = function (id, dataIndex) {
     var nodesMap = this._nodesMap;
 
     if (nodesMap[generateNodeKey(id)]) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.error('Graph nodes have duplicate name or id');
         }
         return;

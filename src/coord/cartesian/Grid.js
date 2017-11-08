@@ -563,7 +563,7 @@ function findAxesModels(seriesModel, ecModel) {
     return zrUtil.map(axesTypes, function (axisType) {
         var axisModel = seriesModel.getReferringComponents(axisType)[0];
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!axisModel) {
                 throw new Error(axisType + ' "' + zrUtil.retrieve(
                     seriesModel.get(axisType + 'Index'),
@@ -609,7 +609,7 @@ Grid.create = function (ecModel, api) {
 
         var gridModel = xAxisModel.getCoordSysModel();
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!gridModel) {
                 throw new Error(
                     'Grid "' + zrUtil.retrieve(

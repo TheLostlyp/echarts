@@ -24,7 +24,7 @@ function createListFromArray(data, seriesModel, ecModel) {
     // If data is undefined
     data = data || [];
 
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (!zrUtil.isArray(data)) {
             throw new Error('Invalid data.');
         }
@@ -130,7 +130,7 @@ var creators = {
         var xAxisModel = axesModels[0];
         var yAxisModel = axesModels[1];
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!xAxisModel) {
                 throw new Error('xAxis "' + zrUtil.retrieve(
                     seriesModel.get('xAxisIndex'),
@@ -191,7 +191,7 @@ var creators = {
             id: seriesModel.get('singleAxisId')
         })[0];
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!singleAxisModel) {
                 throw new Error('singleAxis should be specified.');
             }
@@ -230,7 +230,7 @@ var creators = {
         var angleAxisModel = polarModel.findAxisModel('angleAxis');
         var radiusAxisModel = polarModel.findAxisModel('radiusAxis');
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (!angleAxisModel) {
                 throw new Error('angleAxis option not found');
             }

@@ -124,7 +124,7 @@ var polarCreator = {
                     id: seriesModel.get('polarId')
                 })[0];
 
-                if (__DEV__) {
+                if ('undefined' !== typeof __DEV__ && __DEV__) {
                     if (!polarModel) {
                         throw new Error(
                             'Polar "' + zrUtil.retrieve(

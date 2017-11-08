@@ -228,7 +228,7 @@ function getVisualGradient(data, coordSys) {
         }
     }
     if (!visualMeta || coordSys.type !== 'cartesian2d') {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.warn('Visual map on line style only support x or y dimension.');
         }
         return;

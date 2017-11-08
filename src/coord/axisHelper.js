@@ -33,7 +33,7 @@ export function getScaleExtent(scale, model) {
             boundaryGap = [boundaryGap || 0, boundaryGap || 0];
         }
         if (typeof boundaryGap[0] === 'boolean') {
-            if (__DEV__) {
+            if ('undefined' !== typeof __DEV__ && __DEV__) {
                 console.warn('Boolean type for boundaryGap is only '
                     + 'allowed for ordinal axis. Please use string in '
                     + 'percentage instead, e.g., "20%". Currently, '

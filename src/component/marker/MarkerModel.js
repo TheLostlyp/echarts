@@ -21,7 +21,7 @@ var MarkerModel = echarts.extendComponentModel({
      */
     init: function (option, parentModel, ecModel, extraOpt) {
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             if (this.type === 'marker') {
                 throw new Error('Marker component is abstract component. Use markLine, markPoint, markArea instead.');
             }

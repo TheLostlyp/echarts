@@ -92,7 +92,7 @@ var BrushModel = echarts.extendComponentModel({
      * @param {Array.<Object>} [ranges]
      */
     setAreas: function (areas) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(zrUtil.isArray(areas));
             zrUtil.each(areas, function (area) {
                 zrUtil.assert(area.brushType, 'Illegal areas');

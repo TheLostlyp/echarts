@@ -64,7 +64,7 @@ var SeriesModel = ComponentModel.extend({
         this.mergeDefaultAndTheme(option, ecModel);
 
         var data = this.getInitialData(option, ecModel);
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(data, 'getInitialData returned invalid data.');
         }
         /**

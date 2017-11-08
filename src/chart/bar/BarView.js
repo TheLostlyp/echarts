@@ -24,7 +24,7 @@ export default echarts.extendChartView({
         ) {
             this._render(seriesModel, ecModel, api);
         }
-        else if (__DEV__) {
+        else if ('undefined' !== typeof __DEV__ && __DEV__) {
             console.warn('Only cartesian2d and polar supported for bar.');
         }
 

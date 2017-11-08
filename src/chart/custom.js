@@ -32,7 +32,7 @@ var GROUP_DIFF_PREFIX = 'e\0\0';
  *         size: function (dataSize, dataItem) {} // return size of each axis in coordSys.
  *     }}
  */
-var prepareCustoms = {
+ var prepareCustoms = {
     cartesian2d: prepareCartesian2d,
     geo: prepareGeo,
     singleAxis: prepareSingleAxis,
@@ -87,36 +87,36 @@ echarts.extendChartView({
      * @private
      * @type {module:echarts/data/List}
      */
-    _data: null,
+     _data: null,
 
     /**
      * @override
      */
-    render: function (customSeries, ecModel, api) {
+     render: function (customSeries, ecModel, api) {
         var oldData = this._data;
         var data = customSeries.getData();
         var group = this.group;
         var renderItem = makeRenderItem(customSeries, data, ecModel, api);
 
         data.diff(oldData)
-            .add(function (newIdx) {
-                data.hasValue(newIdx) && createOrUpdate(
-                    null, newIdx, renderItem(newIdx), customSeries, group, data
+        .add(function (newIdx) {
+            data.hasValue(newIdx) && createOrUpdate(
+                null, newIdx, renderItem(newIdx), customSeries, group, data
                 );
-            })
-            .update(function (newIdx, oldIdx) {
-                var el = oldData.getItemGraphicEl(oldIdx);
-                data.hasValue(newIdx)
-                    ? createOrUpdate(
-                        el, newIdx, renderItem(newIdx), customSeries, group, data
-                    )
-                    : (el && group.remove(el));
-            })
-            .remove(function (oldIdx) {
-                var el = oldData.getItemGraphicEl(oldIdx);
-                el && group.remove(el);
-            })
-            .execute();
+        })
+        .update(function (newIdx, oldIdx) {
+            var el = oldData.getItemGraphicEl(oldIdx);
+            data.hasValue(newIdx)
+            ? createOrUpdate(
+                el, newIdx, renderItem(newIdx), customSeries, group, data
+                )
+            : (el && group.remove(el));
+        })
+        .remove(function (oldIdx) {
+            var el = oldData.getItemGraphicEl(oldIdx);
+            el && group.remove(el);
+        })
+        .execute();
 
         this._data = data;
     },
@@ -124,8 +124,8 @@ echarts.extendChartView({
     /**
      * @override
      */
-    dispose: zrUtil.noop
-});
+     dispose: zrUtil.noop
+ });
 
 
 function createEl(elOption) {
@@ -144,7 +144,7 @@ function createEl(elOption) {
                 height: shape.height || 0
             },
             'center'
-        );
+            );
         el.__customPathData = elOption.pathData;
     }
     else if (graphicType === 'image') {
@@ -160,7 +160,7 @@ function createEl(elOption) {
     else {
         var Clz = graphicUtil[graphicType.charAt(0).toUpperCase() + graphicType.slice(1)];
 
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(Clz, 'graphic type "' + graphicType + '" can not be found.');
         }
 
@@ -199,10 +199,10 @@ function updateEl(el, dataIndex, elOption, animatableModel, data, isInit) {
         // textFill and fill, textStroke and stroke in 'text' element.
         !elOptionStyle.hasOwnProperty('textFill') && elOptionStyle.fill && (
             elOptionStyle.textFill = elOptionStyle.fill
-        );
+            );
         !elOptionStyle.hasOwnProperty('textStroke') && elOptionStyle.stroke && (
             elOptionStyle.textStroke = elOptionStyle.stroke
-        );
+            );
     }
 
     if (el.type !== 'group') {
@@ -243,17 +243,17 @@ function makeRenderItem(customSeries, data, ecModel, api) {
     var prepareResult = {};
 
     if (coordSys) {
-        if (__DEV__) {
+        if ('undefined' !== typeof __DEV__ && __DEV__) {
             zrUtil.assert(renderItem, 'series.render is required.');
             zrUtil.assert(
                 coordSys.prepareCustoms || prepareCustoms[coordSys.type],
                 'This coordSys does not support custom series.'
-            );
+                );
         }
 
         prepareResult = coordSys.prepareCustoms
-            ? coordSys.prepareCustoms()
-            : prepareCustoms[coordSys.type](coordSys);
+        ? coordSys.prepareCustoms()
+        : prepareCustoms[coordSys.type](coordSys);
     }
 
     var userAPI = zrUtil.defaults({
@@ -298,7 +298,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
                 dataIndex: data.getRawIndex(dataIndexInside)
             }, userParams),
             userAPI
-        ) || {};
+            ) || {};
     };
 
     // Do not update cache until api called.
@@ -321,7 +321,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @param {number} [dataIndexInside=currDataIndexInside]
      * @return {number|string} value
      */
-    function value(dim, dataIndexInside) {
+     function value(dim, dataIndexInside) {
         dataIndexInside == null && (dataIndexInside = currDataIndexInside);
         return data.get(data.getDimension(dim || 0), dataIndexInside);
     }
@@ -335,7 +335,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @param {Object} [extra]
      * @param {number} [dataIndexInside=currDataIndexInside]
      */
-    function style(extra, dataIndexInside) {
+     function style(extra, dataIndexInside) {
         dataIndexInside == null && (dataIndexInside = currDataIndexInside);
         updateCache(dataIndexInside);
 
@@ -352,11 +352,11 @@ function makeRenderItem(customSeries, data, ecModel, api) {
             });
 
             itemStyle.text = currLabelNormalModel.getShallow('show')
-                ? zrUtil.retrieve2(
-                    customSeries.getFormattedLabel(dataIndexInside, 'normal'),
-                    data.get(currLabelValueDim, dataIndexInside)
+            ? zrUtil.retrieve2(
+                customSeries.getFormattedLabel(dataIndexInside, 'normal'),
+                data.get(currLabelValueDim, dataIndexInside)
                 )
-                : null;
+            : null;
         }
 
         extra && zrUtil.extend(itemStyle, extra);
@@ -368,7 +368,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @param {Object} [extra]
      * @param {number} [dataIndexInside=currDataIndexInside]
      */
-    function styleEmphasis(extra, dataIndexInside) {
+     function styleEmphasis(extra, dataIndexInside) {
         dataIndexInside == null && (dataIndexInside = currDataIndexInside);
         updateCache(dataIndexInside);
 
@@ -380,12 +380,12 @@ function makeRenderItem(customSeries, data, ecModel, api) {
             }, true);
 
             itemStyle.text = currLabelEmphasisModel.getShallow('show')
-                ? zrUtil.retrieve3(
-                    customSeries.getFormattedLabel(dataIndexInside, 'emphasis'),
-                    customSeries.getFormattedLabel(dataIndexInside, 'normal'),
-                    data.get(currLabelValueDim, dataIndexInside)
+            ? zrUtil.retrieve3(
+                customSeries.getFormattedLabel(dataIndexInside, 'emphasis'),
+                customSeries.getFormattedLabel(dataIndexInside, 'normal'),
+                data.get(currLabelValueDim, dataIndexInside)
                 )
-                : null;
+            : null;
         }
 
         extra && zrUtil.extend(itemStyle, extra);
@@ -397,7 +397,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @param {string} visualType
      * @param {number} [dataIndexInside=currDataIndexInside]
      */
-    function visual(visualType, dataIndexInside) {
+     function visual(visualType, dataIndexInside) {
         dataIndexInside == null && (dataIndexInside = currDataIndexInside);
         return data.getItemVisual(dataIndexInside, visualType);
     }
@@ -411,7 +411,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @param {number} [opt.barCategoryGap]
      * @return {Object} {width, offset, offsetCenter} is not support, return undefined.
      */
-    function barLayout(opt) {
+     function barLayout(opt) {
         if (coordSys.getBaseAxis) {
             var baseAxis = coordSys.getBaseAxis();
             return barGrid.getLayoutOnAxis(zrUtil.defaults({axis: baseAxis}, opt), api);
@@ -422,7 +422,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @public
      * @return {Array.<number>}
      */
-    function currentSeriesIndices() {
+     function currentSeriesIndices() {
         return ecModel.getCurrentSeriesIndices();
     }
 
@@ -435,7 +435,7 @@ function makeRenderItem(customSeries, data, ecModel, api) {
      * @param {string} [opt.fontFamily]
      * @return {string} font string
      */
-    function font(opt) {
+     function font(opt) {
         return graphicUtil.getFont(opt, ecModel);
     }
 }
@@ -465,10 +465,10 @@ function doCreateOrUpdate(el, dataIndex, elOption, animatableModel, group, data)
         && (elOptionType !== 'path' || elOption.pathData !== el.__customPathData)
         && (elOptionType !== 'image' || elOption.style.image !== el.__customImagePath)
         && (elOptionType !== 'text' || elOption.style.text !== el.__customText)
-    ) {
+        ) {
         group.remove(el);
-        el = null;
-    }
+    el = null;
+}
 
     // `elOption.type` is undefined when `renderItem` returns nothing.
     if (elOptionType == null) {
@@ -505,7 +505,7 @@ function doCreateOrUpdate(el, dataIndex, elOption, animatableModel, group, data)
                     animatableModel,
                     el,
                     data
-                );
+                    );
             }
             for (; index < oldChildren.length; index++) {
                 oldChildren[index] && el.remove(oldChildren[index]);
@@ -525,11 +525,11 @@ function diffGroupChildren(context) {
         getKey,
         getKey,
         context
-    ))
-        .add(processAddUpdate)
-        .update(processAddUpdate)
-        .remove(processRemove)
-        .execute();
+        ))
+    .add(processAddUpdate)
+    .update(processAddUpdate)
+    .remove(processRemove)
+    .execute();
 }
 
 function getKey(item, idx) {
@@ -549,7 +549,7 @@ function processAddUpdate(newIndex, oldIndex) {
         context.animatableModel,
         context.group,
         context.data
-    );
+        );
 }
 
 function processRemove(oldIndex) {

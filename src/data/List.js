@@ -248,7 +248,7 @@ listProto.initData = function (data, nameList, dimValueGetter) {
     if (isDataArray) {
         data = new DefaultDataProvider(data);
     }
-    if (__DEV__) {
+    if ('undefined' !== typeof __DEV__ && __DEV__) {
         if (!isDataArray && (typeof data.getItem != 'function' || typeof data.count != 'function')) {
             throw new Error('Inavlid data provider.');
         }
